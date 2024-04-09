@@ -22,9 +22,9 @@ typedef enum {
     TOKEN_BANG, TOKEN_BANG_EQUAL,	  	// '!', '!='
     TOKEN_LESS, TOKEN_LESS_EQUAL, TOKEN_LESS_LESS, 				// '<', '<=', '<<'
     TOKEN_GREATER, TOKEN_GREATER_EQUAL, TOKEN_GREAER_GREATER, 	// '>', '>=', '>>'
-    // ×ÖÃæÖµ: ±êÊ¶·û, ×Ö·û, ×Ö·û´®, Êı×Ö
+    // å­—é¢å€¼: æ ‡è¯†ç¬¦, å­—ç¬¦, å­—ç¬¦ä¸², æ•°å­—
     TOKEN_IDENTIFIER, TOKEN_CHARACTER, TOKEN_STRING, TOKEN_NUMBER,
-    // ¹Ø¼ü×Ö
+    // å…³é”®å­—
     TOKEN_SIGNED, TOKEN_UNSIGNED,
     TOKEN_CHAR, TOKEN_SHORT, TOKEN_INT, TOKEN_LONG,
     TOKEN_FLOAT, TOKEN_DOUBLE,
@@ -33,21 +33,21 @@ typedef enum {
     TOKEN_WHILE, TOKEN_DO, TOKEN_FOR,
     TOKEN_BREAK, TOKEN_CONTINUE, TOKEN_RETURN, TOKEN_GOTO,
     TOKEN_CONST, TOKEN_SIZEOF, TOKEN_TYPEDEF,
-    // ¸¨ÖúToken
+    // è¾…åŠ©Token
     TOKEN_ERROR, TOKEN_EOF
 } TokenType;
 
 typedef struct {
     TokenType type;
-    const char* start;	// startÖ¸ÏòsourceÖĞµÄ×Ö·û£¬sourceÎª¶ÁÈëµÄÔ´´úÂë¡£
-    int length;		    // length±íÊ¾Õâ¸öTokenµÄ³¤¶È
-    int line;		    // line±íÊ¾Õâ¸öTokenÔÚÔ´´úÂëµÄÄÄÒ»ĞĞ, ·½±ãºóÃæµÄ±¨´í
+    const char* start;	// startæŒ‡å‘sourceä¸­çš„å­—ç¬¦ï¼Œsourceä¸ºè¯»å…¥çš„æºä»£ç ã€‚
+    int length;		    // lengthè¡¨ç¤ºè¿™ä¸ªTokençš„é•¿åº¦
+    int line;		    // lineè¡¨ç¤ºè¿™ä¸ªTokenåœ¨æºä»£ç çš„å“ªä¸€è¡Œ, æ–¹ä¾¿åé¢çš„æŠ¥é”™
 } Token;
 
-// ¶Ô Scanner ½øĞĞ³õÊ¼»¯ 
+// å¯¹ Scanner è¿›è¡Œåˆå§‹åŒ– 
 void initScanner(const char* source);
 
-// µ÷ÓÃscanToken(), ·µ»ØÏÂÒ»¸öToken.
+// è°ƒç”¨scanToken(), è¿”å›ä¸‹ä¸€ä¸ªToken.
 Token scanToken();
 
 #endif
