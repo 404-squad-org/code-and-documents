@@ -8,11 +8,11 @@
 static void run(const char* source) {
     initScanner(source);
     int line = -1;
-    // ´òÓ¡Token, Óöµ½TOKEN_EOFÎªÖ¹
+    // æ‰“å°Token, é‡åˆ°TOKEN_EOFä¸ºæ­¢
     for (;;) {
-        // ½âÎöÏÂÒ»¸öToken
+        // è§£æä¸‹ä¸€ä¸ªToken
         Token token = scanToken();
-        // ´òÓ¡Õâ¸öTokenµÄĞÅÏ¢
+        // æ‰“å°è¿™ä¸ªTokençš„ä¿¡æ¯
         if (token.line != line) {
             printf("%4d ", token.line);
             line = token.line;
@@ -27,8 +27,8 @@ static void run(const char* source) {
 }
 
 static void repl() {
-    // ÓëÓÃ»§½»»¥£¬ÓÃ»§Ã¿ÊäÈëÒ»ĞĞ´úÂë£¬·ÖÎöÒ»ĞĞ´úÂë£¬²¢½«½á¹ûÊä³ö
-    // replÊÇ"read evaluate print loop"µÄËõĞ´
+    // ä¸ç”¨æˆ·äº¤äº’ï¼Œç”¨æˆ·æ¯è¾“å…¥ä¸€è¡Œä»£ç ï¼Œåˆ†æä¸€è¡Œä»£ç ï¼Œå¹¶å°†ç»“æœè¾“å‡º
+    // replæ˜¯"read evaluate print loop"çš„ç¼©å†™
     char* user_input = (char)calloc(1, MAX_CODE_PER_LINE);
     while (gets(user_input))
     {
@@ -37,48 +37,48 @@ static void repl() {
 }
 
 static char* readFile(const char* path) {
-    // ÓÃ»§ÊäÈëÎÄ¼şÃû£¬½«Õû¸öÎÄ¼şµÄÄÚÈİ¶ÁÈëÄÚ´æ£¬²¢ÔÚÄ©Î²Ìí¼Ó'\0'
-    // ×¢Òâ: ÕâÀïÓ¦¸ÃÊ¹ÓÃ¶¯Ì¬ÄÚ´æ·ÖÅä£¬Òò´ËÓ¦¸ÃÊÂÏÈÈ·¶¨ÎÄ¼şµÄ´óĞ¡¡£
-    //´ò¿ªÎÄ¼ş
+    // ç”¨æˆ·è¾“å…¥æ–‡ä»¶åï¼Œå°†æ•´ä¸ªæ–‡ä»¶çš„å†…å®¹è¯»å…¥å†…å­˜ï¼Œå¹¶åœ¨æœ«å°¾æ·»åŠ '\0'
+    // æ³¨æ„: è¿™é‡Œåº”è¯¥ä½¿ç”¨åŠ¨æ€å†…å­˜åˆ†é…ï¼Œå› æ­¤åº”è¯¥äº‹å…ˆç¡®å®šæ–‡ä»¶çš„å¤§å°ã€‚
+    //æ‰“å¼€æ–‡ä»¶
     FILE* file_stream = fopen(path, "r");
     if (!file_stream) {
         fprintf(stderr, "Error: %s open failed.\n", path);
         exit(1);
     }
-    //µÃÎÄ¼ş´óĞ¡
+    //å¾—æ–‡ä»¶å¤§å°
     fseek(file_stream, 0, SEEK_END);
     long int bytes = ftell(file_stream);
     if (bytes == -1) {
-        //ÎÄ¼ş¿ÉÄÜ²»´æÔÚ»òÕßÄÚÈİÎª¿Õ
+        //æ–‡ä»¶å¯èƒ½ä¸å­˜åœ¨æˆ–è€…å†…å®¹ä¸ºç©º
         fclose(file_stream);
         fprintf(stderr, "Error: ftell failed.\n");
         exit(1);
     }
-    //ÉêÇëÄÚ´æ
+    //ç”³è¯·å†…å­˜
     char* buffer = (char*)calloc(bytes + 1, sizeof(char));
     if (!buffer) {
         fprintf(stderr, "Error: calloc failed.\n");
         exit(1);
     }
-    //¶ÁÈëÎÄ¼ş²¢Ìí¼Ó¿Õ×Ö·û
+    //è¯»å…¥æ–‡ä»¶å¹¶æ·»åŠ ç©ºå­—ç¬¦
     rewind(file_stream);
     size_t n = fread(buffer, 1, bytes, file_stream);
     if (n > bytes) {
-        //ÈôÎÄ¼ş¶ÁÈ¡´íÎó£¬¹Ø±ÕÎÄ¼ş£¬ÊÍ·Å·ÖÅäµÄÄÚ´æ
+        //è‹¥æ–‡ä»¶è¯»å–é”™è¯¯ï¼Œå…³é—­æ–‡ä»¶ï¼Œé‡Šæ”¾åˆ†é…çš„å†…å­˜
         fclose(file_stream);
         free(buffer);
         fprintf(stderr, "Error: fread failed.\n");
         exit(1);
     }
     buffer[bytes] = '\0';
-    //¹Ø±ÕÎÄ¼ş
+    //å…³é—­æ–‡ä»¶
     fclose(file_stream);
     return buffer;
 }
 
 
 static void runFile(const char* path) {
-    // ´¦Àí'.c'ÎÄ¼ş:ÓÃ»§ÊäÈëÎÄ¼şÃû£¬·ÖÎöÕû¸öÎÄ¼ş£¬²¢½«½á¹ûÊä³ö
+    // å¤„ç†'.c'æ–‡ä»¶:ç”¨æˆ·è¾“å…¥æ–‡ä»¶åï¼Œåˆ†ææ•´ä¸ªæ–‡ä»¶ï¼Œå¹¶å°†ç»“æœè¾“å‡º
     char* source  = readFile(path);
     run(source);
     free(source);
@@ -86,11 +86,11 @@ static void runFile(const char* path) {
 
 int main(int argc, const char* argv[]) {
     if (argc == 1) {
-        // ./scanner Ã»ÓĞ²ÎÊı,Ôò½øÈë½»»¥Ê½½çÃæ
+        // ./scanner æ²¡æœ‰å‚æ•°,åˆ™è¿›å…¥äº¤äº’å¼ç•Œé¢
         repl();
     }
     else if (argc == 2) {
-        // ./scanner file ºóÃæ¸úÒ»¸ö²ÎÊı,Ôò·ÖÎöÕû¸öÎÄ¼ş
+        // ./scanner file åé¢è·Ÿä¸€ä¸ªå‚æ•°,åˆ™åˆ†ææ•´ä¸ªæ–‡ä»¶
         runFile(argv[1]);
     }
     else {
