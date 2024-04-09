@@ -4,12 +4,12 @@
 
 ## 小组成员 (●'◡'●)  
 
-0. 胡文杰 [Mann404](https://github.com/Mann404)
-1. 曾庆哲 [zqz083](https://github.com/zqz083)
-2. 王雪峰 [jingtingsong](https://github.com/jingtingsong)
-3. 陈文懿 [NotBald-Codeist](https://github.com/NotBald-Codeist)
-4. 魏嘉琪 [jwei226](https://github.com/jwei226)
-5. 王思博 [WssiEr](https://github.com/WssiEr)
+0.  [Mann404](https://github.com/Mann404)
+1.  [zqz083](https://github.com/zqz083)
+2.  [jingtingsong](https://github.com/jingtingsong)
+3.  [NotBald-Codeist](https://github.com/NotBald-Codeist)
+4.  [jwei226](https://github.com/jwei226)
+5.  [WssiEr](https://github.com/WssiEr)
 
 ## 组会框架 ( •_•)>⌐■-■  
 
