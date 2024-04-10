@@ -1,0 +1,55 @@
+# include "scanner.h"
+#include <stdbool.h>
+#include <string.h>
+
+"adfdfdf
+"
+
+
+int test(void) {
+	return 0;
+}'y' <<= >>= ====<<<<
+
+/*bool haveDot = false;
+	if (peek() == '.') {
+		advance();
+		haveDot = true;
+	}
+	bool haveFraction = false;
+	while (isDigit(peek())) {
+		advance();
+		haveFraction = true;
+	}
+	if (haveDot && !haveFraction) {
+		scanner.current--;
+	}*/
+int test2(void) {
+	return 0;
+}'
+
+static Token number(void) {
+	while (isDigit(peek())) advance();
+	if (peek() == '.' && isDigit(peekNext())) {
+		advance();
+		while (isDigit(peek())) advance;
+	}
+	/*bool haveDot = false;
+	if (peek() == '.') {
+		advance();
+		haveDot = true;
+	}
+	bool haveFraction = false;
+	while (isDigit(peek())) {
+		advance();
+		haveFraction = true;
+	}
+	if (haveDot && !haveFraction) {
+		scanner.current--;
+	}*/
+	return makeToken(TOKEN_NUMBER);
+}
+'dfddg
+'
+
+"fgsgsgsdg
+'dddd
