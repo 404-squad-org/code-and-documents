@@ -7,11 +7,11 @@
 static void run(const char* source) {
     initScanner(source);
     int line = -1;
-    // ´òÓ¡Token, Óöµ½TOKEN_EOFÎªÖ¹
+    // æ‰“å°Token, é‡åˆ°TOKEN_EOFä¸ºæ­¢
     for (;;) {
-        // ½âÎöÏÂÒ»¸öToken
+        // è§£æä¸‹ä¸€ä¸ªToken
         Token token = scanToken();
-        // ´òÓ¡Õâ¸öTokenµÄĞÅÏ¢
+        // æ‰“å°è¿™ä¸ªTokençš„ä¿¡æ¯
         if (token.line != line) {
             printf("%4d ", token.line);
             line = token.line;
@@ -26,8 +26,8 @@ static void run(const char* source) {
 }
 
 static void repl() {
-    // ÓëÓÃ»§½»»¥£¬ÓÃ»§Ã¿ÊäÈëÒ»ĞĞ´úÂë£¬·ÖÎöÒ»ĞĞ´úÂë£¬²¢½«½á¹ûÊä³ö
-    // replÊÇ"read evaluate print loop"µÄËõĞ´
+    // ä¸ç”¨æˆ·äº¤äº’ï¼Œç”¨æˆ·æ¯è¾“å…¥ä¸€è¡Œä»£ç ï¼Œåˆ†æä¸€è¡Œä»£ç ï¼Œå¹¶å°†ç»“æœè¾“å‡º
+    // replæ˜¯"read evaluate print loop"çš„ç¼©å†™
     char line[1024];
     for (;;) {
         printf("> ");
@@ -42,8 +42,8 @@ static void repl() {
 }
 
 static char* readFile(const char* path) {
-    // ÓÃ»§ÊäÈëÎÄ¼şÃû£¬½«Õû¸öÎÄ¼şµÄÄÚÈİ¶ÁÈëÄÚ´æ£¬²¢ÔÚÄ©Î²Ìí¼Ó'\0'
-    // ×¢Òâ: ÕâÀïÓ¦¸ÃÊ¹ÓÃ¶¯Ì¬ÄÚ´æ·ÖÅä£¬Òò´ËÓ¦¸ÃÊÂÏÈÈ·¶¨ÎÄ¼şµÄ´óĞ¡¡£
+    // ç”¨æˆ·è¾“å…¥æ–‡ä»¶åï¼Œå°†æ•´ä¸ªæ–‡ä»¶çš„å†…å®¹è¯»å…¥å†…å­˜ï¼Œå¹¶åœ¨æœ«å°¾æ·»åŠ '\0'
+    // æ³¨æ„: è¿™é‡Œåº”è¯¥ä½¿ç”¨åŠ¨æ€å†…å­˜åˆ†é…ï¼Œå› æ­¤åº”è¯¥äº‹å…ˆç¡®å®šæ–‡ä»¶çš„å¤§å°ã€‚
     FILE* file = fopen(path, "rb");
     if (file == NULL) {
         fprintf(stderr, "Could not open this file %s.\n", path);
@@ -59,7 +59,7 @@ static char* readFile(const char* path) {
             memory to alloc to read %s\n",path);
         exit(1);
     }
-    //µ½ÕâÀïËµÃ÷ÒÑ¾­ÉêÇëºÃ£¬ÏÂÃæ¿ªÊ¼¶ÁÈ¡Êı¾İ°É
+    //åˆ°è¿™é‡Œè¯´æ˜å·²ç»ç”³è¯·å¥½ï¼Œä¸‹é¢å¼€å§‹è¯»å–æ•°æ®å§
     size_t bytesRead = fread(buffer, sizeof(char), fileSize, file);
     if (bytesRead < fileSize) {
         fprintf(stderr, "read error :less read %s.\n",path);
@@ -72,7 +72,7 @@ static char* readFile(const char* path) {
 }
 
 static void runFile(const char* path) {
-    // ´¦Àí'.c'ÎÄ¼ş:ÓÃ»§ÊäÈëÎÄ¼şÃû£¬·ÖÎöÕû¸öÎÄ¼ş£¬²¢½«½á¹ûÊä³ö
+    // å¤„ç†'.c'æ–‡ä»¶:ç”¨æˆ·è¾“å…¥æ–‡ä»¶åï¼Œåˆ†ææ•´ä¸ªæ–‡ä»¶ï¼Œå¹¶å°†ç»“æœè¾“å‡º
     char* source = readFile(path);
     run(source);
     free(source);
@@ -80,11 +80,11 @@ static void runFile(const char* path) {
 
 int main(int argc, const char* argv[]) {
     if (argc == 1) {
-        // ./scanner Ã»ÓĞ²ÎÊı,Ôò½øÈë½»»¥Ê½½çÃæ
+        // ./scanner æ²¡æœ‰å‚æ•°,åˆ™è¿›å…¥äº¤äº’å¼ç•Œé¢
         repl();
     }
     else if (argc == 2) {
-        // ./scanner file ºóÃæ¸úÒ»¸ö²ÎÊı,Ôò·ÖÎöÕû¸öÎÄ¼ş
+        // ./scanner file åé¢è·Ÿä¸€ä¸ªå‚æ•°,åˆ™åˆ†ææ•´ä¸ªæ–‡ä»¶
         runFile(argv[1]);
     }
     else {
