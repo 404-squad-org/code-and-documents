@@ -6,22 +6,22 @@
 
 typedef struct {
     const char* start;
-    const char* current;    // ÏÂÒ»¸öÒª¶ÁµÄ×Ö·û
+    const char* current;    // ä¸‹ä¸€ä¸ªè¦è¯»çš„å­—ç¬¦
     int line;
 } Scanner;
 
-// È«¾Ö±äÁ¿
+// å…¨å±€å˜é‡
 Scanner scanner;
 
 void initScanner(const char* source) {
-    // ³õÊ¼»¯scanner
+    // åˆå§‹åŒ–scanner
     scanner.start = source;
     scanner.current = source;
     scanner.line = 1;
 }
 
 /***************************************************************************************
- *                                   ¸¨Öú·½·¨											*
+ *                                   è¾…åŠ©æ–¹æ³•											*
  ***************************************************************************************/
 static bool isAlpha(char c) {
     return (c >= 'a' && c <= 'z') ||
@@ -50,7 +50,7 @@ static char peekNext() {
     return *(scanner.current + 1);
 }
 
-// ÓĞÌõ¼şµÄÒÆ¶¯currentÖ¸Õë
+// æœ‰æ¡ä»¶çš„ç§»åŠ¨currentæŒ‡é’ˆ
 static bool match(char expected) {
      if (isAtEnd()) return false;
     if (peek() != expected) return false;
@@ -58,7 +58,7 @@ static bool match(char expected) {
     return true;
 }
 
-// ´«ÈëTokenType, ´´½¨¶ÔÓ¦ÀàĞÍµÄToken£¬²¢·µ»Ø¡£
+// ä¼ å…¥TokenType, åˆ›å»ºå¯¹åº”ç±»å‹çš„Tokenï¼Œå¹¶è¿”å›ã€‚
 static Token makeToken(TokenType type) {
     Token token;
     token.type = type;
@@ -68,7 +68,7 @@ static Token makeToken(TokenType type) {
     return token;
 }
 
-// Óöµ½²»ÄÜ½âÎöµÄÇé¿öÊ±£¬ÎÒÃÇ´´½¨Ò»¸öERROR Token. ±ÈÈç£ºÓöµ½@£¬$µÈ·ûºÅÊ±£¬±ÈÈç×Ö·û´®£¬×Ö·ûÃ»ÓĞ¶ÔÓ¦µÄÓÒÒıºÅÊ±¡£
+// é‡åˆ°ä¸èƒ½è§£æçš„æƒ…å†µæ—¶ï¼Œæˆ‘ä»¬åˆ›å»ºä¸€ä¸ªERROR Token. æ¯”å¦‚ï¼šé‡åˆ°@ï¼Œ$ç­‰ç¬¦å·æ—¶ï¼Œæ¯”å¦‚å­—ç¬¦ä¸²ï¼Œå­—ç¬¦æ²¡æœ‰å¯¹åº”çš„å³å¼•å·æ—¶ã€‚
 static Token errorToken(const char* message) {
     Token token;
     token.type = TOKEN_ERROR;
@@ -79,9 +79,9 @@ static Token errorToken(const char* message) {
 }
 
 static void skipWhitespace() {
-    // Ìø¹ı¿Õ°××Ö·û: ' ', '\r', '\t', '\n'ºÍ×¢ÊÍ
-    // ×¢ÊÍÒÔ'//'¿ªÍ·, Ò»Ö±µ½ĞĞÎ²
-    // ×¢Òâ¸üĞÂscanner.line£¡
+    // è·³è¿‡ç©ºç™½å­—ç¬¦: ' ', '\r', '\t', '\n'å’Œæ³¨é‡Š
+    // æ³¨é‡Šä»¥'//'å¼€å¤´, ä¸€ç›´åˆ°è¡Œå°¾
+    // æ³¨æ„æ›´æ–°scanner.lineï¼
     while (1) {
         if (peek() == ' ' ||
             peek() == '\r' ||
@@ -104,30 +104,30 @@ static void skipWhitespace() {
     }
 }
 
-// ²ÎÊıËµÃ÷£º
-// start: ´Óscanner.startÎ»ÖÃÍùºóÆ«ÒÆstart¿ªÊ¼±È½Ï
-// length: Òª±È½Ï×Ö·ûµÄ³¤¶È
-// rest: Òª±È½ÏµÄÄÚÈİ
-// type: Èç¹ûÍêÈ«Æ¥Åä£¬ÔòËµÃ÷ÊÇtypeÀàĞÍµÄ¹Ø¼ü×Ö
+// å‚æ•°è¯´æ˜ï¼š
+// start: ä»scanner.startä½ç½®å¾€ååç§»startå¼€å§‹æ¯”è¾ƒ
+// length: è¦æ¯”è¾ƒå­—ç¬¦çš„é•¿åº¦
+// rest: è¦æ¯”è¾ƒçš„å†…å®¹
+// type: å¦‚æœå®Œå…¨åŒ¹é…ï¼Œåˆ™è¯´æ˜æ˜¯typeç±»å‹çš„å…³é”®å­—
 static TokenType checkKeyword(int start, int length, const char* rest, TokenType type) {
-    // TokenµÄ³¤¶È
+    // Tokençš„é•¿åº¦
     int len = (int)(scanner.current - scanner.start);
-    // start + length: ¹Ø¼ü×ÖµÄ³¤¶È
+    // start + length: å…³é”®å­—çš„é•¿åº¦
     if (start + length == len && memcmp(scanner.start + start, rest, length) == 0) {
         return type;
     }
     return TOKEN_IDENTIFIER;
 }
 
-// ÅĞ¶Ïµ±Ç°Tokenµ½µ×ÊÇ±êÊ¶·û»¹ÊÇ¹Ø¼ü×Ö
+// åˆ¤æ–­å½“å‰Tokenåˆ°åº•æ˜¯æ ‡è¯†ç¬¦è¿˜æ˜¯å…³é”®å­—
 static TokenType identifierType() {
-    // È·¶¨identifierÀàĞÍÖ÷ÒªÓĞÁ½ÖÖ·½Ê½£º
-    // 1. ½«ËùÓĞµÄ¹Ø¼ü×Ö·ÅÈë¹şÏ£±íÖĞ£¬È»ºó²é±íÈ·ÈÏ
-    // 2. ½«ËùÓĞµÄ¹Ø¼ü×Ö·ÅÈëTrieÊ÷ÖĞ£¬È»ºó²é±íÈ·ÈÏ
-    // TrieÊ÷µÄ·½Ê½²»¹ÜÊÇ¿Õ¼äÉÏ»¹ÊÇÊ±¼äÉÏ¶¼ÓÅÓÚ¹şÏ£±íµÄ·½Ê½
+    // ç¡®å®šidentifierç±»å‹ä¸»è¦æœ‰ä¸¤ç§æ–¹å¼ï¼š
+    // 1. å°†æ‰€æœ‰çš„å…³é”®å­—æ”¾å…¥å“ˆå¸Œè¡¨ä¸­ï¼Œç„¶åæŸ¥è¡¨ç¡®è®¤
+    // 2. å°†æ‰€æœ‰çš„å…³é”®å­—æ”¾å…¥Trieæ ‘ä¸­ï¼Œç„¶åæŸ¥è¡¨ç¡®è®¤
+    // Trieæ ‘çš„æ–¹å¼ä¸ç®¡æ˜¯ç©ºé—´ä¸Šè¿˜æ˜¯æ—¶é—´ä¸Šéƒ½ä¼˜äºå“ˆå¸Œè¡¨çš„æ–¹å¼
 
     char c = scanner.start[0];
-    // ÓÃswitchÓï¾äÊµÏÖTrieÊ÷
+    // ç”¨switchè¯­å¥å®ç°Trieæ ‘
     switch (c) {
     case 'b': return checkKeyword(1, 4, "reak", TOKEN_BREAK);
     case 'c': {
@@ -141,8 +141,8 @@ static TokenType identifierType() {
                 if (len > 2) {
                     switch (scanner.start[3])
                     {
-                        //ÕâÀïµÄ´øÈıÎ»scanner.start[2]¶¼ÊÇn£¬Ã»°ì·¨Çø·Ö£¬
-                        //ËùÒÔÓÃµÚËÄÎ»scanner.start[3]
+                        //è¿™é‡Œçš„å¸¦ä¸‰ä½scanner.start[2]éƒ½æ˜¯nï¼Œæ²¡åŠæ³•åŒºåˆ†ï¼Œ
+                        //æ‰€ä»¥ç”¨ç¬¬å››ä½scanner.start[3]
                     case's':return checkKeyword(2, 3, "nst", TOKEN_CONST);
                     case't':return checkKeyword(2, 6, "ntinue", TOKEN_CONTINUE);
                     }
@@ -246,35 +246,35 @@ static TokenType identifierType() {
 
         // identifier
         return TOKEN_IDENTIFIER;
-        //Ê¶±ğ¹Ø¼ü×Ö
+        //è¯†åˆ«å…³é”®å­—
     }
 }
 
-//ÅĞ¶ÏÎª±êÊ¶·û¡£
+//åˆ¤æ–­ä¸ºæ ‡è¯†ç¬¦ã€‚
 static Token identifier() {
- //IDENTFIER°üº¬£º×ÖÄ¸£¬Êı×ÖºÍÏÂ»®Ïß
+ //IDENTFIERåŒ…å«ï¼šå­—æ¯ï¼Œæ•°å­—å’Œä¸‹åˆ’çº¿
   while (isAlpha(peek()) || isDigit(peek())) {
        advance();
     }
-  // ÕâÑùµÄToken¿ÉÄÜÊÇ±êÊ¶·û, Ò²¿ÉÄÜÊÇ¹Ø¼ü×Ö, 
-  //identifierType()ÊÇÓÃÀ´È·¶¨TokenÀàĞÍµÄ
+  // è¿™æ ·çš„Tokenå¯èƒ½æ˜¯æ ‡è¯†ç¬¦, ä¹Ÿå¯èƒ½æ˜¯å…³é”®å­—, 
+  //identifierType()æ˜¯ç”¨æ¥ç¡®å®šTokenç±»å‹çš„
     return makeToken(identifierType());
 }
 
 static Token number() {
-    // ¼òµ¥Æğ¼û£¬ÎÒÃÇ½«NUMBERµÄ¹æÔò¶¨ÒåÈçÏÂ:
-    // 1. NUMBER¿ÉÒÔ°üº¬Êı×ÖºÍ×î¶àÒ»¸ö'.'ºÅ
-    // 2. '.'ºÅÇ°ÃæÒªÓĞÊı×Ö
-    // 3. '.'ºÅºóÃæÒ²ÒªÓĞÊı×Ö
-    // ÕâĞ©¶¼ÊÇºÏ·¨µÄNUMBER: 123, 3.14
-    // ÕâĞ©¶¼ÊÇ²»ºÏ·¨µÄNUMBER: 123., .14
+    // ç®€å•èµ·è§ï¼Œæˆ‘ä»¬å°†NUMBERçš„è§„åˆ™å®šä¹‰å¦‚ä¸‹:
+    // 1. NUMBERå¯ä»¥åŒ…å«æ•°å­—å’Œæœ€å¤šä¸€ä¸ª'.'å·
+    // 2. '.'å·å‰é¢è¦æœ‰æ•°å­—
+    // 3. '.'å·åé¢ä¹Ÿè¦æœ‰æ•°å­—
+    // è¿™äº›éƒ½æ˜¯åˆæ³•çš„NUMBER: 123, 3.14
+    // è¿™äº›éƒ½æ˜¯ä¸åˆæ³•çš„NUMBER: 123., .14
     while (isDigit(peek())) {
         advance();
     }
-    //Èç¹û·¢ÏÖĞ¡Êıµã²¢ÇÒÏÂÒ»¸öÊÇÊı×Ö
+    //å¦‚æœå‘ç°å°æ•°ç‚¹å¹¶ä¸”ä¸‹ä¸€ä¸ªæ˜¯æ•°å­—
     if (peek() == '.' && isDigit(peekNext())) {
         advance();
-        //Ö»ÓĞÂú×ã12.333ÕâÖÖÇé¿ö²Å¼ÌĞøÍùºóÒÆ¶¯
+        //åªæœ‰æ»¡è¶³12.333è¿™ç§æƒ…å†µæ‰ç»§ç»­å¾€åç§»åŠ¨
         while (isDigit(peek())) {
             advance();
         }
@@ -284,49 +284,49 @@ static Token number() {
 }
 
 static Token string() {
-    // ×Ö·û´®ÒÔ"¿ªÍ·£¬ÒÔ"½áÎ²£¬¶øÇÒ²»ÄÜ¿çĞĞ
+    // å­—ç¬¦ä¸²ä»¥"å¼€å¤´ï¼Œä»¥"ç»“å°¾ï¼Œè€Œä¸”ä¸èƒ½è·¨è¡Œ
     while (!isAtEnd() && peek() != '"') {
         if (peek() == '\n') {
             return errorToken("no support multi line");
         }
         advance();
-    }//³öÀ´¾ÍÊÇµ½´ï½áÎ²»òÕßµÈÓÚ "
+    }//å‡ºæ¥å°±æ˜¯åˆ°è¾¾ç»“å°¾æˆ–è€…ç­‰äº "
     if (isAtEnd()) {
-        return errorToken("arrive end ");//×Ö·û´®½áÊøÃ»ÓĞ  "   ´íÎó
+        return errorToken("arrive end ");//å­—ç¬¦ä¸²ç»“æŸæ²¡æœ‰  "   é”™è¯¯
     }
-    //Íùºó×ßÒ»²½£¬currentÖ¸Ïò¿Õ°××Ö·û
+    //å¾€åèµ°ä¸€æ­¥ï¼ŒcurrentæŒ‡å‘ç©ºç™½å­—ç¬¦
     advance();
     return makeToken(TOKEN_STRING);
 }
 
 static Token character() {
-    // ×Ö·û'¿ªÍ·£¬ÒÔ'½áÎ²£¬¶øÇÒ²»ÄÜ¿çĞĞ  
+    // å­—ç¬¦'å¼€å¤´ï¼Œä»¥'ç»“å°¾ï¼Œè€Œä¸”ä¸èƒ½è·¨è¡Œ  
     while (!isAtEnd() && peek() != '\'') {
         if (peek() == '\n') {
             return errorToken("no support multi line");
         }
         advance;
-    }//³öÀ´¾ÍÊÇµ½´ï½áÎ²»òÕßµÈÓÚ '
+    }//å‡ºæ¥å°±æ˜¯åˆ°è¾¾ç»“å°¾æˆ–è€…ç­‰äº '
     if (isAtEnd()) {
-        return errorToken("arrive end ");//×Ö·û´®½áÊøÃ»ÓĞ  '   ´íÎó
+        return errorToken("arrive end ");//å­—ç¬¦ä¸²ç»“æŸæ²¡æœ‰  '   é”™è¯¯
     }
-    //Íùºó×ßÒ»²½£¬currentÖ¸Ïò¿Õ°××Ö·û
+    //å¾€åèµ°ä¸€æ­¥ï¼ŒcurrentæŒ‡å‘ç©ºç™½å­—ç¬¦
     advance();
     return makeToken(TOKEN_CHARACTER);
 }
 
 /***************************************************************************************
- *                                   	·Ö´Ê											  *
+ *                                   	åˆ†è¯											  *
  ***************************************************************************************/
 Token scanToken() {
-    // Ìø¹ıÇ°ÖÃ¿Õ°××Ö·ûºÍ×¢ÊÍ
+    // è·³è¿‡å‰ç½®ç©ºç™½å­—ç¬¦å’Œæ³¨é‡Š
     skipWhitespace();
-    // ¼ÇÂ¼ÏÂÒ»¸öTokenµÄÆğÊ¼Î»ÖÃ
+    // è®°å½•ä¸‹ä¸€ä¸ªTokençš„èµ·å§‹ä½ç½®
     scanner.start = scanner.current;
 
     if (isAtEnd()) return makeToken(TOKEN_EOF);
 
-    // »ñÈ¡TokenµÄµÚÒ»¸ö×Ö·û
+    // è·å–Tokençš„ç¬¬ä¸€ä¸ªå­—ç¬¦
     char c = advance();
     if (isAlpha(c)) return identifier();
     if (isDigit(c)) return number();
@@ -389,7 +389,7 @@ Token scanToken() {
         else return makeToken(TOKEN_GREATER);
        
 
-        // three-characters tokens £¨¸½¼ÓÌâ£©
+        // three-characters tokens ï¼ˆé™„åŠ é¢˜ï¼‰
         // <, <=, <<, <<=
         // >, >=, >>, >>=
 
