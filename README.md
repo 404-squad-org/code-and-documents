@@ -6,10 +6,8 @@
 
 0.  [Mann404](https://github.com/Mann404)
 1.  [zqz083](https://github.com/zqz083)
-2.  [jingtingsong](https://github.com/jingtingsong)
-3.  [NotBald-Codeist](https://github.com/NotBald-Codeist)
-4.  [jwei226](https://github.com/jwei226)
-5.  [WssiEr](https://github.com/WssiEr)
+2.  [NotBald-Codeist](https://github.com/NotBald-Codeist)
+3.  [WssiEr](https://github.com/WssiEr)
 
 ## 组会框架 ( •_•)>⌐■-■  
 
@@ -37,7 +35,7 @@
 - 预约/创建会议室
 - 主持会议
 
-同时，组会的主持人也将作为第二部分内容的分享者，贯彻整个会议流程。🚗
+同时，组会的主持人也是本次会议的分享者，贯彻整个会议流程。🚗
 
 #### 2.2. 记录员
 
